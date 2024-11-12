@@ -1,0 +1,13 @@
+= Konzept Tasks: Inhalt
+
+// tag::inhalt[]
+[[einleitung]]
+
+== Einleitung
+
+Dieses Dokument beschreibt in Zukunft die konzeptionellen Grundlagen der Planung und Ausführung von Tasks in der IsyFact.
+
+Bis zur endgültigen Ablösung als eigenständiges Modul verweisen wir auf die bestehenden
+xref:4.0.x@isyfact-standards-doku:isy-task:konzept.adoc[Seiten der isy-task].
+
+// end::inhalt[]
