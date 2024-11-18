@@ -1,13 +1,253 @@
 = Konzept Tasks: Inhalt
 
 // tag::inhalt[]
+
 [[einleitung]]
 
 == Einleitung
 
-Dieses Dokument beschreibt in Zukunft die konzeptionellen Grundlagen der Planung und Ausführung von Tasks in der IsyFact.
+Das Konzept Task Scheduling beschreibt die konzeptionellen Grundlagen der Steuerung, d.h. Planung und Ausführung, von Tasks in der IsyFact.
 
-Bis zur endgültigen Ablösung als eigenständiges Modul verweisen wir auf die bestehenden
-xref:4.0.x@isyfact-standards-doku:isy-task:konzept.adoc[Seiten der isy-task].
+Tasks sind in diesem Kontext periodisch wiederkehrende Tätigkeiten, die innerhalb einer xref:glossary:glossary:master.adoc#glossar-anwendungskomponente[Anwendungskomponente] angesiedelt sind und zur Erfüllung der fachlichen oder technischen Anforderungen der Anwendung beitragen.
+Sie <<abgrenzung-aufgaben-batches,grenzen sich wesentlich>> von xref:glossary:glossary:master.adoc#glossar-batch[Batches] ab.
+
+[[abgrenzung-aufgaben-batches]]
+.Abgrenzung zwischen Tasks und Batches
+[cols=".^1s,3,3",options="header"]
+|====
+|
+^|Task
+^|Batch
+
+|Funktion
+|Aufruf von Anwendungsfunktionen, +
+technischen Prüfungen o.ä.
+.^|Aufruf von Anwendungskomponenten (Schnittstelle)
+
+|Verortung
+|Bestandteil einer Anwendungskomponente
+|Bestandteil eines IT-Systems
+
+|Planung & Steuerung
+.^|Durch die Anwendung selbst
+.^|Manuell oder automatisiert von außen
+|====
+
+Das Task Scheduling der IsyFact verfolgt diese Ziele:
+
+"Nahtlose" Entwicklung mit Spring Boot und IsyFact::
+Die Entwicklung kann alle Funktionen von Spring Boot beim Task Scheduling wie gewohnt nutzen.
+Die IsyFact integriert sich weitestgehend automatisch in das Task Scheduling von Spring und bietet den Mehrwert ihrer Bausteine an.
+
+Bereitstellung weiterer Funktionalität zum Task Scheduling::
+Das Task Scheduling von Spring ist weniger flexibel als die direkte Nutzung der Java Concurrency API.
+Die IsyFact bietet als Mehrwert zusätzliche Anwendungsfälle an, basierend auf Java Multithreading.
+
+Konfiguration aller wesentlichen Aspekte::
+Tasks müssen mindestens die folgenden Möglichkeiten zur Konfiguration bieten:
+
+* Umgebungsabhängige Aktivierung bzw. Deaktivierung,
+* Credentials zur Authentifizierung und Autorisierung.
+
+Erfüllung nichtfunktionaler Anforderungen::
+Tasks müssen die folgenden, nichtfunktionalen Anforderungen erfüllen.
+Sie müssen:
+
+* fachliche Operationen nachvollziehbar aufrufen,
+* wichtige Informationen und Metadaten ihrer Ausführungen ins Log schreiben,
+* sich wie ein technischer Benutzer (Client) authentifizieren können,
+* überwachbar sein.
+
+
+== Architekturübersicht
+
+Der Baustein Task Scheduling nutzt zur Erfüllung seiner Aufgaben mehrere Produkte und andere Bausteine der IsyFact.
+
+.Kontext des Bausteins Task Scheduling
+image::4.0.x@isyfact-standards-doku:isy-task:konzept/bausteinkontext.dn.svg[]
+
+Der Baustein Task Scheduling setzt direkt auf das Task Scheduling von Spring auf, und erweitert dieses.
+Außerdem nutzt er Spring AOP aus dem Spring Framework und die @AspectJ-Annotationen des Produkts AspectJ.
+Wie der Baustein diese Produkte nutzt, beschreibt die Seite "xref:4.0.x@isyfact-standards-doku:isy-task:konzept/erweiterung-spring.adoc[]".
+
+Des Weiteren nutzt er mehrere Bausteine der IsyFact, um ihre Funktion für Tasks verfügbar zu machen.
+Dazu gehören die Bausteine xref:4.0.x@isyfact-standards-doku:isy-logging:konzept/master.adoc[Logging], xref:4.0.x@isyfact-standards-doku:isy-security:konzept/master.adoc[Security] und xref:4.0.x@isyfact-standards-doku:isy-ueberwachung:konzept/master.adoc[Überwachung].
+Wie genau die Integration aussieht, beschreibt die Seite "xref:4.0.x@isyfact-standards-doku:isy-task:konzept/integration-isyfact.adoc[]".
+
+== Integration der IsyFact in das Task Scheduling
+
+
+Die IsyFact stellt einige Anforderungen an die Ausführung fachlicher und technischer Operationen.
+Diese gelten auch für Tasks, die nicht direkt durch Anwender, sondern durch die Anwendung selbst eingeplant und ausgeführt werden.
+
+Die folgenden Kapitel beschreiben knapp die Anforderungen und konzentrieren sich dann auf die Umsetzung.
+
+[[logging]]
+=== Logging
+
+Tasks müssen sich ins fachliche und technische Logging integrieren.
+
+Dazu bindet der Baustein Task Scheduling, vornehmlich im Around Advice und den damit zusammenhängenden Klassen,
+den xref:4.0.x@isyfact-standards-doku:isy-logging:konzept/master.adoc#isylogger[IsyFact-Logger] aus dem Baustein Logging ein.
+
+Der Baustein schreibt per Default folgende Informationen ins Log:
+
+* Start und Ende der Ausführung eines Tasks (Log-Level: `INFO`),
+* Fehler in der Konfiguration eines Tasks (Log-Level: `ERROR`).
+
+.icon:university[title=Architekturregel] Logging für Tasks
+****
+Der Anwendungscode für Tasks muss mindestens die folgenden Informationen ins Log schreiben:
+
+* Fachliche Fehlermeldungen (Log-Level: `INFO`),
+* Technische Fehlermeldungen (Log-Level: `ERROR`).
+****
+
+
+[[nachvollziehbarkeit]]
+=== Nachvollziehbarkeit
+
+Tasks müssen fachliche Operationen nachvollziehbar aufrufen.
+Das bedeutet, dass sich alle aufgerufenen fachlichen Operationen eindeutig einer bestimmten Ausführung eines Tasks zuordnen lassen.
+
+Dazu nutzt der Baustein Task Scheduling xref:4.0.x@isyfact-standards-doku:isy-logging:konzept/master.adoc#korrelations-id[Korrelations-IDs].
+Der Around Advice generiert hierfür direkt nach seinem Aufruf eine neue Korrelations-ID und setzt diese im MDC (_Mapped Diagnostic Context_), bereitgestellt durch das Framework Logback.
+Direkt vor der Beendigung seines Aufrufs entfernt der Advice die Korrelations-ID wieder aus dem MDC.
+
+Bei der Umsetzung von Tasks ist weiter nichts zu beachten.
+
+
+[[authentifizierung]]
+=== Authentifizierung
+
+Wie bereits erwähnt, rufen Tasks fachliche Operationen auf.
+Manche dieser Operationen sind abgesichert, d.h. sie erfordern bestimmte Rechte zum Aufruf.
+Diese Rechte sind authentifizierten Benutzern bzw. Clients zugeordnet.
+
+Die Absicherung des Bausteins Task Scheduling basiert auf dem _Standard OAuth2.0_ und nutzt hierfür den Baustein Security und dessen xref:4.0.x@isyfact-standards-doku:isy-security:konzept/master.adoc#aussensicht-der-komponente-security[Schnittstelle zur Authentifizierung].
+Die Konfiguration von Tasks, sowie die globale Konfiguration aller Tasks, bietet dazu die Möglichkeit, Credentials (d.h. Benutzernamen & Passwörter oder Client-IDs & Client Secrets) sowie Behördenkennzeichen zu setzen.
+
+Bei der Umsetzung von Tasks muss die Konfiguration mit konkreten Werten belegt werden.
+Es kann aber auch global konfiguriert werden, dass keine Authentifizierung erforderlich ist.
+
+
+[[ueberwachung]]
+=== Überwachung
+
+Tasks müssen dem Monitoring Informationen über ihre Ausführungen bereitstellen.
+
+Der Baustein Task Scheduling nutzt hierzu die Möglichkeiten des Frameworks xref:4.0.x@isyfact-standards-doku:isy-ueberwachung:konzept/master.adoc#micrometer[Micrometer], das der Baustein Überwachung nutzt, und definiert folgende Metriken:
+
+* Anzahl erfolgreicher Ausführungen pro Task,
+* Anzahl nicht erfolgreicher Ausführungen pro Task,
+* Fehler (d.h. Klasse der Exception) bei nicht erfolgreichen Ausführungen.
+
+Die Metriken können bei Nutzung eines entsprechenden Monitoring-Produkts auch über die Zeit hinweg ausgewertet werden.
+
+Bei der Umsetzung von Tasks ist nichts weiter zu beachten.
+Für die Erhebung detaillierter Statistiken zur Ausführungszeit eines Tasks ermöglicht der Baustein Task Scheduling die Verwendung der Annotation `@Timed` von Micrometer.
+Sie wird, wie `@Scheduled`, an der Methode des Tasks gesetzt.
+
+NOTE: Mehr zu der Annotation `@Timed` findet sich in der https://docs.micrometer.io/micrometer/reference/concepts/timers.html#_the_timed_annotation[Dokumentation von Micrometer].
+
+[[konfiguration]]
+=== Konfiguration
+
+Tasks müssen über eine xref:4.0.x@isyfact-standards-doku:referenzarchitektur:software-technisch/backend/konfiguration.adoc#betriebliche-konfiguration[betriebliche Konfiguration] konfigurierbar sein.
+Neben den bisher erwähnten Konfigurationsmöglichkeiten unterstützt der Baustein Task Scheduling noch das selektive Ausführen von Tasks.
+Dazu können Anwendungen Tasks über die Konfiguration:
+
+* aktivieren und deaktivieren,
+* nur auf bestimmten Maschinen ausführen.
+
+Die Zuordnung von Tasks zu Maschinen geschieht über den Hostnamen.
+
+Bei der Umsetzung von Tasks muss die entsprechende Konfiguration mit konkreten Werten belegt werden.
+Tasks sind per Default aktiviert, das muss nicht explizit konfiguriert werden.
+
+== Task Scheduling mit Spring
+
+
+Das Task Scheduling mit Spring muss einmalig mit der Annotation `@EnableScheduling` aktiviert werden,
+das ist bereits durchgeführt in einer Konfigurationsklasse des Bausteins `isy-task`.
+Dadurch wird implizit einer der Spring Scheduler genutzt.
+Die Geschäftsanwendung zeichnet eine beliebige Methode einer Klasse aus als "durch einen Task auszuführenden Code" durch das Setzen der Annotation @Scheduled.
+Die Parameter der Annotation legen fest, wie genau Tasks eingeplant und ausgeführt werden.
+
+.Beispiele für die Einplanung von Tasks
+[source, java]
+----
+public class ExampleTasks {
+
+    @Scheduled(fixedDelay = 1000)
+    public void scheduleTaskWithFixedDelay() {
+        // ...
+    }
+
+    @Scheduled(fixedRate = 1000)
+    public void scheduleTaskWithFixedRate() {
+        // ...
+    }
+
+    @Scheduled(fixedDelay = 1000, initialDelay = 1000)
+    public void scheduleTaskWithFixedRateAndInitialDelay() {
+        // ...
+    }
+
+    @Scheduled(cron = "0 15 10 15 * ?")
+    public void scheduleTaskWithCronExpression() {
+        // ...
+    }
+}
+----
+
+Der größte Vorteil des Ansatzes von Spring ist die Einfachheit der Verwendung für die Entwicklung.
+Diesen Vorteil nutzt der Baustein Task Scheduling vollständig aus, indem er sich nahtlos in diesen Ansatz integriert.
+
+NOTE: Mehr Informationen zu dem Thema finden sich in der https://docs.spring.io/spring-boot/docs/2.7.x/reference/html/features.html#features.task-execution-and-scheduling[Dokumentation über Task Scheduling von Spring] sowie in der https://docs.spring.io/spring-framework/docs/5.3.x/reference/html/integration.html#scheduling-annotation-support[Dokumentation über die Annotationen zum Scheduling des Spring Frameworks].
+
+=== Erweiterung des Task Scheduling
+
+Der Spring Scheduler stösst die Ausführung des Tasks an.
+Der Baustein Task Scheduling nutzt Spring AOP und @AspectJ-Annotationen, um vor und nach der Ausführung von Methoden mit der Annotation `@Scheduled` eigenen Code auszuführen.
+Hierzu wird ein Around Advice verwendet.
+Dieser ist dafür zuständig:
+
+* die integrierten Bausteine der IsyFact zur Ausführung des Tasks zu initialisieren,
+* die eigentliche mit `@Scheduled` annotierte Methode aufzurufen,
+* Aufräumarbeiten zu erledigen, sodass die Verarbeitung des Tasks sauber beendet werden kann,
+* das Ergebnis der mit `@Scheduled` annotierten Methode zurückzugeben.
+
+.Ausführung eines Tasks mit dem Baustein Task Scheduling
+image::4.0.x@isyfact-standards-doku:isy-task:konzept/around-aspect-ablauf.dn.svg[]
+
+NOTE: Mehr Informationen zu Around Advices (und zu Spring AOP) finden sich in der https://docs.spring.io/spring-framework/docs/5.3.x/reference/html/core.html#aop-ataspectj-around-advice[Dokumentation des Spring Frameworks].
+
+Neben dem Advice gibt es für jeden Task eine eigene Konfiguration sowie eine globale Konfiguration mit Standardwerten für alle Tasks.
+Hierüber lassen sich die xref:4.0.x@isyfact-standards-doku:isy-task:konzept/integration-isyfact.adoc[integrierten IsyFact-Bausteine] und der Task selbst konfigurieren.
+
+Alle genannten Fähigkeiten des Bausteins Task Scheduling konfigurieren sich per Spring Autokonfiguration selbst, sobald die Bibliothek zum Baustein in eine Anwendung integriert wird. Für die Umsetzung eines Tasks gemäß IsyFact wird somit benötigt:
+
+* die Einbindung der IsyFact-Bibliothek zum Task Scheduling,
+* eine mit `@Scheduled` annotierte Methode,
+* eine globale Konfiguration für alle Tasks,
+* (optional) eine Task-spezifische Konfiguration.
+
+=== Einmalig ausgeführte Tasks
+
+Das Task Scheduling von Spring fokussiert sich auf mehrfach ausgeführte Tasks.
+Einmalig ausgeführte Tasks unterstützt es nicht.
+Hier springt der Baustein Task Scheduling ein und ermöglicht es, Tasks genau einmal auszuführen, ohne die Vorteile der xref:4.0.x@isyfact-standards-doku:isy-task:konzept/integration-isyfact.adoc[] zu verlieren.
+
+Dazu definiert der Baustein die Annotation `@OnceTask`.
+Die Tasks müssen:
+
+* von `Runnable` ableiten,
+* die Methode `run()` mit der Annotation `@OnceTask` kennzeichnen, und
+* programmatisch im von Spring bereitgestellten Task Scheduler eingeplant werden.
+
+Für diese Tasks gelten dieselben Integrationsvorteile wie für mit `@Scheduled` geplante Tasks.
+
+
 
 // end::inhalt[]

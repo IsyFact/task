@@ -1,0 +1,11 @@
+= Changelog Baustein Task Scheduling
+
+include::glossary:licence:partial$licence.adoc[]
+
+*Änderungen IsyFact 4.0.0*
+
+// tag::release-4.0.0[]
+
+* Inhalt von IsyFact 3.0.0 übernommen
+
+// end::release-4.0.0[]
