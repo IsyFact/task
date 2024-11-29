@@ -29,7 +29,7 @@
         <isy-exception-core.version>3.0.0</isy-exception-core.version>
 
         <spring.framework.version>6.1.6</spring.framework.version>
-        <spring.boot.version>3.2.5</spring.boot.version>
+        <spring.boot.version>3.4.0</spring.boot.version>
 
         <jakarta.validation.version>3.0.2</jakarta.validation.version>
         <hibernate.validator.version>8.0.1.Final</hibernate.validator.version>
