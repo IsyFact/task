@@ -46,7 +46,7 @@
         <jupiter.version>5.10.2</jupiter.version>
         <assertj.version>3.24.2</assertj.version>
         <mockito.version>5.14.2</mockito.version>
-        <micrometer.version>1.12.5</micrometer.version>
+        <micrometer.version>1.14.1</micrometer.version>
 
         <maven.jacoco.argLine/>
     </properties>
