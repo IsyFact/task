@@ -1,0 +1,13 @@
+name: Maven Release
+on:
+  release:
+    types: [released]
+  workflow_dispatch:
+
+jobs:
+  Build:
+    uses: IsyFact/isy-github-actions-templates/.github/workflows/maven_build_template.yml@v1.6.0
+    with:
+      jdk-version: 21
+      version: ${{ github.ref_name }}
+      sonar-skip: true
