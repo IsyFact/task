@@ -28,7 +28,7 @@ import de.bund.bva.isyfact.task.monitoring.IsyTaskAspect;
 import de.bund.bva.isyfact.task.security.Authenticator;
 import de.bund.bva.isyfact.task.security.AuthenticatorFactory;
 import de.bund.bva.isyfact.task.util.TaskId;
-import de.bund.bva.isyfact.util.spring.MessageSourceHolder;
+import de.bund.bva.isyfact.util.text.MessageSourceHolder;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;

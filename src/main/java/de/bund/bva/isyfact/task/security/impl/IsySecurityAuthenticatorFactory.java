@@ -10,7 +10,7 @@ import de.bund.bva.isyfact.task.config.IsyTaskConfigurationProperties;
 import de.bund.bva.isyfact.task.konstanten.HinweisSchluessel;
 import de.bund.bva.isyfact.task.security.Authenticator;
 import de.bund.bva.isyfact.task.security.AuthenticatorFactory;
-import de.bund.bva.isyfact.util.spring.MessageSourceHolder;
+import de.bund.bva.isyfact.util.text.MessageSourceHolder;
 
 /**
  * Creates Authenticators for authentication with isy-security.

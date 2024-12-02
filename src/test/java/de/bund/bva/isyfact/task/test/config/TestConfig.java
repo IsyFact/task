@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 
-import de.bund.bva.isyfact.util.spring.MessageSourceHolder;
+import de.bund.bva.isyfact.util.text.MessageSourceHolder;
 
 @Configuration
 @EnableAutoConfiguration

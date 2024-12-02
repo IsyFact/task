@@ -20,11 +20,11 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+        <isy-datetime.version>4.0.0-SNAPSHOT</isy-datetime.version>
+        <isy-util.version>4.0.0-SNAPSHOT</isy-util.version>
         <isy-security.version>3.0.0</isy-security.version>
-        <isy-util.version>3.0.0</isy-util.version>
         <isy-security-test.version>3.0.0</isy-security-test.version>
 
-        <isy-datetime.version>3.0.0</isy-datetime.version>
         <isy-logging.version>3.0.0</isy-logging.version>
         <isy-exception-core.version>3.0.0</isy-exception-core.version>
 
@@ -73,6 +73,13 @@
             <artifactId>isy-datetime</artifactId>
             <version>${isy-datetime.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>de.bund.bva.isyfact</groupId>
+            <artifactId>isy-util</artifactId>
+            <version>${isy-util.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>de.bund.bva.isyfact</groupId>
             <artifactId>isy-exception-core</artifactId>
@@ -105,13 +112,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
-        <dependency>
-            <groupId>de.bund.bva.isyfact</groupId>
-            <artifactId>isy-util</artifactId>
-            <version>${isy-util.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
