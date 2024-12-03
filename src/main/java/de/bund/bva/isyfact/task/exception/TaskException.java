@@ -1,22 +1,23 @@
 package de.bund.bva.isyfact.task.exception;
 
-import de.bund.bva.isyfact.exception.FehlertextProvider;
-import de.bund.bva.isyfact.exception.TechnicalException;
+import de.bund.bva.isyfact.util.text.MessageProvider;
 
-public class TaskException extends TechnicalException {
+import java.io.Serial;
 
-    /** Serial version UID. */
+public class TaskException extends Exception {
+
+    /**
+     * Serial version UID.
+     */
+    @Serial
     private static final long serialVersionUID = 13L;
 
-    /** Error message provider for task exceptions. */
-    private static final FehlertextProvider FEHLERTEXT_PROVIDER = new TaskFehlertextProvider();
-
     public TaskException(String ausnahmeId, String... parameter) {
-        super(ausnahmeId, FEHLERTEXT_PROVIDER, parameter);
+        super(MessageProvider.getMessage(ausnahmeId, parameter));
     }
 
     public TaskException(String ausnahmeId, Throwable cause, String... parameter) {
-        super(ausnahmeId, cause, FEHLERTEXT_PROVIDER, parameter);
+        super(MessageProvider.getMessage(ausnahmeId, parameter), cause);
     }
 
 }

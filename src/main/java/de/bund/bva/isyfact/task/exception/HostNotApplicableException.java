@@ -7,11 +7,6 @@ import de.bund.bva.isyfact.task.konstanten.FehlerSchluessel;
  * host does not match the target host.
  */
 public class HostNotApplicableException extends TaskException {
-
-    public HostNotApplicableException(String hostname) {
-        super(FehlerSchluessel.HOSTNAME_STIMMT_NICHT_UEBEREIN, hostname);
-    }
-
     public HostNotApplicableException(String hostname, Throwable cause) {
         super(FehlerSchluessel.HOSTNAME_STIMMT_NICHT_UEBEREIN, cause, hostname);
     }
