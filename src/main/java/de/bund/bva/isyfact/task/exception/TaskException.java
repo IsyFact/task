@@ -19,5 +19,4 @@ public class TaskException extends Exception {
     public TaskException(String ausnahmeId, Throwable cause, String... parameter) {
         super(MessageProvider.getMessage(ausnahmeId, parameter), cause);
     }
-
 }
