@@ -1,19 +1,21 @@
 package de.bund.bva.isyfact.task.konfiguration.impl;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
-import de.bund.bva.isyfact.logging.IsyLogger;
-import de.bund.bva.isyfact.logging.IsyLoggerFactory;
 import de.bund.bva.isyfact.task.exception.HostNotApplicableException;
 import de.bund.bva.isyfact.task.konfiguration.HostHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 /**
  * The HostHandler is a utility class that checks a host instance.
  */
 public class LocalHostHandlerImpl implements HostHandler {
-    /** Class logger. */
-    private static final IsyLogger LOG = IsyLoggerFactory.getLogger(LocalHostHandlerImpl.class);
+    /**
+     * Class logger.
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(LocalHostHandlerImpl.class);
 
     /**
      * Checks whether the task is allowed to run on the host.
@@ -46,7 +48,7 @@ public class LocalHostHandlerImpl implements HostHandler {
 
         if (!currentHostName.matches(expectedHostName)) {
             LOG.debug("isHostApplicable: hostNames do not match! expectedHostName: {} currentHostName: {}",
-                expectedHostName, currentHostName);
+                    expectedHostName, currentHostName);
             return false;
         }
 

@@ -1,6 +1,9 @@
 <configuration scan="true" scanPeriod="1 minutes">
-
-    <include resource="resources/isylogging/logback/appender-entwicklung.xml"/>
+    <appender name="KONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[P: %-5p] [T: %t] [L: %c] - [M: %m] %n</pattern>
+        </encoder>
+    </appender>
 
     <root level="INFO">
         <appender-ref ref="KONSOLE"/>
