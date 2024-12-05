@@ -1,12 +1,12 @@
 package de.bund.bva.isyfact.task;
 
-import de.bund.bva.isyfact.datetime.util.DateTimeUtil;
 import io.micrometer.core.annotation.Timed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
 import static de.bund.bva.isyfact.util.logging.CombinedMarkerFactory.KATEGORIE_JOURNAL;
@@ -22,12 +22,12 @@ public class TestHostHandlerTasks {
     @Scheduled(fixedRate = 1, timeUnit = TimeUnit.SECONDS)
     @Timed(value = "testHostHandlerTasks-scheduledTaskWithCorrectHostname")
     public void scheduledTaskWithCorrectHostname() {
-        LOG.info(createKategorieMarker(KATEGORIE_JOURNAL), SCHLUESSEL, "test task - scheduled - correct host - executed at {}", DateTimeUtil.localDateTimeNow());
+        LOG.info(createKategorieMarker(KATEGORIE_JOURNAL), SCHLUESSEL, "test task - scheduled - correct host - executed at {}", LocalDateTime.now());
     }
 
     @Scheduled(fixedRate = 1, timeUnit = TimeUnit.SECONDS)
     public void scheduledTaskWithWrongHostname() {
-        LOG.info(createKategorieMarker(KATEGORIE_JOURNAL), SCHLUESSEL, "test task - scheduled - wrong host - executed at {}", DateTimeUtil.localDateTimeNow());
+        LOG.info(createKategorieMarker(KATEGORIE_JOURNAL), SCHLUESSEL, "test task - scheduled - wrong host - executed at {}", LocalDateTime.now());
     }
 
 }

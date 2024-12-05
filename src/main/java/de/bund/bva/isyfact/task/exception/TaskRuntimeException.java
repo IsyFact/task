@@ -1,8 +1,8 @@
 package de.bund.bva.isyfact.task.exception;
 
-import de.bund.bva.isyfact.util.text.MessageProvider;
-
 import java.io.Serial;
+
+import static de.bund.bva.isyfact.util.text.MessageProvider.createMessage;
 
 public class TaskRuntimeException extends RuntimeException {
 
@@ -13,6 +13,6 @@ public class TaskRuntimeException extends RuntimeException {
     private static final long serialVersionUID = -3L;
 
     public TaskRuntimeException(String ausnahmeId, String... parameter) {
-        super(MessageProvider.getMessage(ausnahmeId, parameter));
+        super(createMessage(ausnahmeId, parameter));
     }
 }
