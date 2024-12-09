@@ -23,26 +23,26 @@ public class LocalHostHandlerImpl implements HostHandler {
     @Override
     public synchronized boolean isHostApplicable(String expectedHostName) throws HostNotApplicableException {
 
-        InetAddress inetAdress;
+        InetAddress inetAddress;
 
         try {
-            inetAdress = InetAddress.getLocalHost();
+            inetAddress = InetAddress.getLocalHost();
         } catch (UnknownHostException e) {
             throw new HostNotApplicableException(expectedHostName, e);
         }
 
-        LOG.debug("isHostApplicable: inetAdress: {}", inetAdress);
+        LOG.debug("isHostApplicable: inetAddress: {}", inetAddress);
 
-        if (inetAdress == null) {
+        if (inetAddress == null) {
             return false;
         }
 
-        String currentHostName = inetAdress.getHostName();
+        String currentHostName = inetAddress.getHostName();
 
         LOG.debug("isHostApplicable: currentHostName: {}", currentHostName);
 
         if (currentHostName == null || currentHostName.isEmpty()) {
-            LOG.debug("isHostApplicable: inetAdress: {}", inetAdress);
+            LOG.debug("isHostApplicable: inetAddress: {}", inetAddress);
             return false;
         }
 
