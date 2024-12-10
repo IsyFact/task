@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.bund.bva.isyfact</groupId>
@@ -44,32 +45,24 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+        <isy-util.version>4.0.0-SNAPSHOT</isy-util.version>
         <isy-security.version>3.0.0</isy-security.version>
-        <isy-util.version>3.0.0</isy-util.version>
         <isy-security-test.version>3.0.0</isy-security-test.version>
 
-        <isy-datetime.version>3.0.0</isy-datetime.version>
-        <isy-logging.version>3.0.0</isy-logging.version>
-        <isy-exception-core.version>3.0.0</isy-exception-core.version>
+        <logback.version>1.4.14</logback.version>
+        <logback-classic.version>1.5.6</logback-classic.version>
 
         <spring.framework.version>6.1.6</spring.framework.version>
         <spring.boot.version>3.2.5</spring.boot.version>
 
+        <junit.version>4.13.2</junit.version>
+        <jupiter.version>5.10.2</jupiter.version>
+        <mockito.version>5.14.2</mockito.version>
+        <assertj.version>3.24.2</assertj.version>
+
+        <jackson.version>2.18.2</jackson.version>
         <jakarta.validation.version>3.0.2</jakarta.validation.version>
         <hibernate.validator.version>8.0.1.Final</hibernate.validator.version>
-        <junit.version>4.13.2</junit.version>
-        <jupiter.version>5.10.2</jupiter.version>
-        <assertj.version>3.24.2</assertj.version>
-
-        <slf4j.version>2.0.13</slf4j.version>
-        <logback.version>1.4.14</logback.version>
-        <logback-classic.version>1.5.6</logback-classic.version>
-        <logstash-logback-encoder.version>8.0</logstash-logback-encoder.version>
-
-        <junit.version>4.13.2</junit.version>
-        <jupiter.version>5.10.2</jupiter.version>
-        <assertj.version>3.24.2</assertj.version>
-        <mockito.version>5.14.2</mockito.version>
         <micrometer.version>1.12.5</micrometer.version>
 
         <maven.jacoco.argLine/>
@@ -93,59 +86,6 @@
     </repositories>
 
     <dependencies>
-        <dependency>
-            <groupId>net.logstash.logback</groupId>
-            <artifactId>logstash-logback-encoder</artifactId>
-            <version>${logstash-logback-encoder.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>${logback.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-core</artifactId>
-            <version>${logback.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>de.bund.bva.isyfact</groupId>
-            <artifactId>isy-datetime</artifactId>
-            <version>${isy-datetime.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>de.bund.bva.isyfact</groupId>
-            <artifactId>isy-exception-core</artifactId>
-            <version>${isy-exception-core.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>de.bund.bva.isyfact</groupId>
-            <artifactId>isy-logging</artifactId>
-            <version>${isy-logging.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>de.bund.bva.isyfact</groupId>
-            <artifactId>isy-security</artifactId>
-            <version>${isy-security.version}</version>
-            <exclusions>
-                <exclusion>
-
-                    <groupId>org.springframework.security</groupId>
-                    <artifactId>spring-security-config</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.springframework.security</groupId>
-                    <artifactId>spring-security-oauth2-resource-server</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.springframework.security</groupId>
-                    <artifactId>spring-security-oauth2-jose</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
 
         <dependency>
             <groupId>de.bund.bva.isyfact</groupId>
@@ -154,31 +94,71 @@
         </dependency>
 
         <dependency>
+            <groupId>de.bund.bva.isyfact</groupId>
+            <artifactId>isy-security</artifactId>
+            <version>${isy-security.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
             <version>${spring.framework.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>${spring.framework.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring.framework.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot</artifactId>
             <version>${spring.boot.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
             <version>${spring.boot.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <version>${spring.boot.version}</version>
-            <optional>true</optional>
         </dependency>
+
         <dependency>
             <groupId>jakarta.validation</groupId>
             <artifactId>jakarta.validation-api</artifactId>
@@ -186,35 +166,9 @@
         </dependency>
 
         <dependency>
-            <groupId>de.bund.bva.isyfact</groupId>
-            <artifactId>isy-security-test</artifactId>
-            <version>${isy-security-test.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>${mockito.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>${assertj.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <version>${spring.framework.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-test</artifactId>
-            <version>${spring.boot.version}</version>
-            <scope>test</scope>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-core</artifactId>
+            <version>${micrometer.version}</version>
         </dependency>
 
         <dependency>
@@ -232,15 +186,45 @@
         </dependency>
 
         <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>de.bund.bva.isyfact</groupId>
+            <artifactId>isy-security-test</artifactId>
+            <version>${isy-security-test.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.framework.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-test</artifactId>
+            <version>${spring.boot.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
             <version>${spring.framework.version}</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-core</artifactId>
-            <version>${micrometer.version}</version>
         </dependency>
 
         <dependency>
@@ -248,16 +232,6 @@
             <artifactId>hibernate-validator</artifactId>
             <version>${hibernate.validator.version}</version>
             <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.jboss.logging</groupId>
-                    <artifactId>jboss-logging-annotations</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.jboss.logging</groupId>
-                    <artifactId>jboss-logging-processor</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <dependency>
@@ -278,32 +252,30 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-oauth2-client</artifactId>
             <version>${spring.boot.version}</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-config</artifactId>
-            <version>${spring.framework.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-oauth2-resource-server</artifactId>
-            <version>${spring.framework.version}</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-oauth2-client</artifactId>
             <version>${spring.framework.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-resource-server</artifactId>
+            <version>${spring.framework.version}</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-oauth2-jose</artifactId>
             <version>${spring.framework.version}</version>
+            <scope>test</scope>
         </dependency>
+
     </dependencies>
 
     <build>

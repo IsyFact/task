@@ -4,7 +4,7 @@
 package de.bund.bva.isyfact.task.security;
 
 /**
- * Interface über das Tasks bei der Ausführung authentifizieren können.
+ * Interface über den Tasks bei der Ausführung authentifizieren können.
  */
 public interface Authenticator {
 

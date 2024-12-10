@@ -1,22 +1,23 @@
 package de.bund.bva.isyfact.task.security.impl;
 
-import org.springframework.util.StringUtils;
-
-import de.bund.bva.isyfact.logging.IsyLogger;
-import de.bund.bva.isyfact.logging.IsyLoggerFactory;
-import de.bund.bva.isyfact.logging.LogKategorie;
 import de.bund.bva.isyfact.security.oauth2.client.Authentifizierungsmanager;
 import de.bund.bva.isyfact.task.config.IsyTaskConfigurationProperties;
 import de.bund.bva.isyfact.task.konstanten.HinweisSchluessel;
 import de.bund.bva.isyfact.task.security.Authenticator;
 import de.bund.bva.isyfact.task.security.AuthenticatorFactory;
-import de.bund.bva.isyfact.util.spring.MessageSourceHolder;
+import de.bund.bva.isyfact.util.text.MessageSourceHolder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
+
+import static de.bund.bva.isyfact.util.logging.CombinedMarkerFactory.KATEGORIE_SICHERHEIT;
+import static de.bund.bva.isyfact.util.logging.CombinedMarkerFactory.createKategorieMarker;
 
 /**
  * Creates Authenticators for authentication with isy-security.
  */
 public class IsySecurityAuthenticatorFactory implements AuthenticatorFactory {
-    private static final IsyLogger LOG = IsyLoggerFactory.getLogger(IsySecurityAuthenticatorFactory.class);
+    private static final Logger LOG = LoggerFactory.getLogger(IsySecurityAuthenticatorFactory.class);
 
     private final IsyTaskConfigurationProperties configurationProperties;
 
@@ -54,11 +55,11 @@ public class IsySecurityAuthenticatorFactory implements AuthenticatorFactory {
         if (StringUtils.hasText(defaultOauth2ClientRegistrationId)) {
             String nachricht = MessageSourceHolder
                     .getMessage(HinweisSchluessel.VERWENDE_STANDARD_KONFIGURATION, "oauth2ClientRegistrationId");
-            LOG.info(LogKategorie.SICHERHEIT, HinweisSchluessel.VERWENDE_STANDARD_KONFIGURATION, nachricht);
+            LOG.info(createKategorieMarker(KATEGORIE_SICHERHEIT), HinweisSchluessel.VERWENDE_STANDARD_KONFIGURATION, nachricht);
             return new IsySecurityAuthenticator(authentifizierungsmanager, defaultOauth2ClientRegistrationId
             );
         } else {
-            LOG.info(LogKategorie.SICHERHEIT, HinweisSchluessel.VERWENDE_KEINE_AUTHENTIFIZIERUNG,
+            LOG.info(createKategorieMarker(KATEGORIE_SICHERHEIT), HinweisSchluessel.VERWENDE_KEINE_AUTHENTIFIZIERUNG,
                     MessageSourceHolder.getMessage(HinweisSchluessel.VERWENDE_KEINE_AUTHENTIFIZIERUNG));
             return new NoOpAuthenticator();
         }

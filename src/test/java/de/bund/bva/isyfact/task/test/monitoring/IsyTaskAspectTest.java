@@ -1,13 +1,17 @@
 package de.bund.bva.isyfact.task.test.monitoring;
 
-import static org.junit.Assert.assertNull;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-
-import java.util.Map;
-
+import de.bund.bva.isyfact.task.config.IsyTaskConfigurationProperties;
+import de.bund.bva.isyfact.task.config.IsyTaskConfigurationProperties.TaskConfig;
+import de.bund.bva.isyfact.task.exception.TaskKonfigurationInvalidException;
+import de.bund.bva.isyfact.task.konfiguration.HostHandler;
+import de.bund.bva.isyfact.task.monitoring.IsyTaskAspect;
+import de.bund.bva.isyfact.task.security.Authenticator;
+import de.bund.bva.isyfact.task.security.AuthenticatorFactory;
+import de.bund.bva.isyfact.task.util.TaskId;
+import de.bund.bva.isyfact.util.text.MessageSourceHolder;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -20,19 +24,13 @@ import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.context.support.ResourceBundleMessageSource;
 
-import de.bund.bva.isyfact.task.config.IsyTaskConfigurationProperties;
-import de.bund.bva.isyfact.task.config.IsyTaskConfigurationProperties.TaskConfig;
-import de.bund.bva.isyfact.task.exception.TaskKonfigurationInvalidException;
-import de.bund.bva.isyfact.task.konfiguration.HostHandler;
-import de.bund.bva.isyfact.task.monitoring.IsyTaskAspect;
-import de.bund.bva.isyfact.task.security.Authenticator;
-import de.bund.bva.isyfact.task.security.AuthenticatorFactory;
-import de.bund.bva.isyfact.task.util.TaskId;
-import de.bund.bva.isyfact.util.spring.MessageSourceHolder;
+import java.util.Map;
 
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+import static org.junit.Assert.assertNull;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class IsyTaskAspectTest {
@@ -75,7 +73,7 @@ public class IsyTaskAspectTest {
         doReturn(authenticator).when(authenticatorFactory).getAuthenticator(anyString());
 
         ResourceBundleMessageSource resourceBundleMessageSource = new ResourceBundleMessageSource();
-        resourceBundleMessageSource.setBasenames("resources/isy-task/nachrichten");
+        resourceBundleMessageSource.setBasenames("messages");
         MessageSourceHolder messageSourceHolder = new MessageSourceHolder();
         messageSourceHolder.setMessageSource(resourceBundleMessageSource);
 
