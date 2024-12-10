@@ -47,7 +47,7 @@
 
         <isy-util.version>4.0.0-SNAPSHOT</isy-util.version>
         <isy-security.version>3.0.0</isy-security.version>
-        <isy-security-test.version>3.0.0</isy-security-test.version>
+        <isy-security-test.version>3.2.1</isy-security-test.version>
 
         <logback.version>1.4.14</logback.version>
         <logback-classic.version>1.5.6</logback-classic.version>
