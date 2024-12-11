@@ -80,7 +80,6 @@
         <maven.cyclondx.version>2.7.11</maven.cyclondx.version>
         <junit.vintage.version>5.10.0</junit.vintage.version>
         <junit.version>4.13.2</junit.version>
-        <commons-text.version>1.10.0</commons-text.version>
     </properties>
 
     <repositories>
@@ -468,6 +467,25 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.commons</groupId>
+                        <artifactId>commons-text</artifactId>
+                        <version>${commons-text.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
