@@ -475,13 +475,6 @@
                         </goals>
                     </execution>
                 </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.apache.commons</groupId>
-                        <artifactId>commons-text</artifactId>
-                        <version>${commons-text.version}</version>
-                    </dependency>
-                </dependencies>
             </plugin>
         </plugins>
     </build>
