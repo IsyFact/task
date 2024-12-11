@@ -382,13 +382,6 @@
                         <doclint>none</doclint>
                         <quiet>true</quiet>
                     </configuration>
-                    <dependencies>
-                        <dependency>
-                            <groupId>org.apache.commons</groupId>
-                            <artifactId>commons-text</artifactId>
-                            <version>${commons-text.version}</version>
-                        </dependency>
-                    </dependencies>
                 </plugin>
 
                 <plugin>
