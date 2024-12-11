@@ -80,6 +80,7 @@
         <maven.cyclondx.version>2.7.11</maven.cyclondx.version>
         <junit.vintage.version>5.10.0</junit.vintage.version>
         <junit.version>4.13.2</junit.version>
+        <commons-text.version>1.10.0</commons-text.version>
     </properties>
 
     <repositories>
