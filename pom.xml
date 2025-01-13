@@ -63,7 +63,7 @@
         <jackson.version>2.18.2</jackson.version>
         <jakarta.validation.version>3.0.2</jakarta.validation.version>
         <hibernate.validator.version>8.0.1.Final</hibernate.validator.version>
-        <micrometer.version>1.12.5</micrometer.version>
+        <micrometer.version>1.14.3</micrometer.version>
 
         <maven.jacoco.argLine/>
 
